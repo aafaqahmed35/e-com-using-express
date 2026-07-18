@@ -21,21 +21,55 @@
 
                     <div class="card__actions">
 
-                        <!-- Dynamic link using this product's unique ID -->
-                        <a
-                            href="/products/<%= product.id %>"
-                            class="btn"
-                        >
-                            Details
-                        </a>
-                        <a
-                            href="/admin/edit-product/<%= product.id %>"
-                            class="btn"
->
-                            Edit
-                        </a>
+    <!-- Product Details -->
 
-                    </div>
+    <a
+
+        href="/products/<%= product.id %>"
+
+        class="btn"
+
+    >
+
+        Details
+
+    </a>
+
+    <!-- Edit Product -->
+
+    <a
+
+        href="/admin/edit-product/<%= product.id %>"
+
+        class="btn"
+
+    >
+
+        Edit
+
+    </a>
+
+    <!-- Delete Product -->
+
+    <form
+
+        action="/admin/delete-product/<%= product.id %>"
+
+        method="POST"
+
+        class="delete-form"
+
+    >
+
+        <button class="btn" type="submit">
+
+            <u>Delete</u>
+
+        </button>
+
+    </form>
+
+</div>
 
                 </article>
 

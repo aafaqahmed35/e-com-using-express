@@ -53,3 +53,15 @@ exports.postEditProduct = (req, res, next) => {
 };
 
 
+exports.postDeleteProduct=(req,res,next)=>{
+
+    const pid=req.params.productId;
+
+    Product.deleteById(pid);
+
+    res.redirect('/');
+}
+
+
+
+

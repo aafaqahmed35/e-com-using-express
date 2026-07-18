@@ -128,3 +128,11 @@ h1 {
 .product__title {
     color: #8c6464;
 }
+
+.delete-form {
+
+    display: inline;
+
+    margin: 0;
+
+}
