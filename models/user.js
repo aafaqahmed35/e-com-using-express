@@ -30,10 +30,34 @@ const User = sequelize.define('user', {
 
 
     // User's email address
+    //
+    // unique: true creates a database-level uniqueness
+    // constraint so two users cannot use the same email.
     email: {
         type: Sequelize.STRING,
         allowNull: false,
         unique: true
+    },
+
+
+    // User's password HASH
+    //
+    // IMPORTANT:
+    // We will NEVER store the plaintext password here.
+    //
+    // During signup:
+    //
+    // plaintext password
+    //      ↓
+    // bcrypt.hash()
+    //      ↓
+    // bcrypt hash
+    //      ↓
+    // this field
+    //
+    password: {
+        type: Sequelize.STRING,
+        allowNull: false
     }
 
 });

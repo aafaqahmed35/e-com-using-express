@@ -6,7 +6,31 @@ const adminController = require(
     '../controllers/adminController'
 );
 
+// Import authentication middleware
+const isAuth = require(
+    '../middleware/is-auth'
+);
+
 const router = express.Router();
+
+
+// --------------------------------------------------
+// PROTECT ALL ADMIN ROUTES
+// --------------------------------------------------
+//
+// Every route declared BELOW this middleware
+// requires an authenticated session.
+//
+// Request
+//     ↓
+// isAuth
+//     ↓
+// authenticated?
+//     ↓
+// admin route/controller
+//
+
+router.use(isAuth);
 
 
 // --------------------------------------------------
@@ -56,4 +80,3 @@ router.post(
 
 
 module.exports = router;
-

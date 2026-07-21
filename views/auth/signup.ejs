@@ -1,0 +1,136 @@
+<%- include('../includes/head.ejs') %>
+
+<link
+    rel="stylesheet"
+    href="/css/auth.css"
+>
+
+</head>
+
+<body>
+
+    <%- include('../includes/navigation.ejs') %>
+
+
+    <!-- ==========================================
+         SIGNUP PAGE
+         ========================================== -->
+
+    <main class="auth-page">
+
+        <section class="auth-card">
+
+            <div class="auth-header">
+
+                <p class="auth-eyebrow">
+                    Join Mercato
+                </p>
+
+                <h1>
+                    Create your account
+                </h1>
+
+                <p class="auth-subtitle">
+                    Sign up to start shopping and managing
+                    your Mercato experience.
+                </p>
+
+            </div>
+
+
+            <!-- SIGNUP FORM -->
+
+            <form
+                class="auth-form"
+                action="/signup"
+                method="POST"
+            >
+
+                <!-- NAME -->
+
+                <div class="form-control">
+
+                    <label for="name">
+                        Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        placeholder="Your name"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- EMAIL -->
+
+                <div class="form-control">
+
+                    <label for="email">
+                        Email
+                    </label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="you@example.com"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- PASSWORD -->
+
+                <div class="form-control">
+
+                    <label for="password">
+                        Password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="Create a password"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- SUBMIT -->
+
+                <button
+                    class="auth-button"
+                    type="submit"
+                >
+                    Create Account
+                </button>
+
+            </form>
+
+
+            <!-- LOGIN LINK -->
+
+            <p class="auth-switch">
+
+                Already have an account?
+
+                <a href="/login">
+                    Log in
+                </a>
+
+            </p>
+
+        </section>
+
+    </main>
+
+</body>
+
+</html>

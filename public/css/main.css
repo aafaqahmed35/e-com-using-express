@@ -894,3 +894,29 @@ main > h1:only-child {
         font-size: 0.76rem;
     }
 }
+
+/* ==========================================
+   NAVIGATION LOGOUT BUTTON
+   ========================================== */
+
+.logout-form {
+    margin: 0;
+}
+
+.nav-button {
+    padding: 0;
+
+    border: none;
+    background: none;
+
+    font: inherit;
+    font-weight: inherit;
+
+    color: inherit;
+
+    cursor: pointer;
+}
+
+.nav-button:hover {
+    color: #c45a3c;
+}

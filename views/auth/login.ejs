@@ -1,0 +1,117 @@
+<%- include('../includes/head.ejs') %>
+
+<link
+    rel="stylesheet"
+    href="/css/auth.css"
+>
+
+</head>
+
+<body>
+
+    <%- include('../includes/navigation.ejs') %>
+
+
+    <!-- ==========================================
+         LOGIN PAGE
+         ========================================== -->
+
+    <main class="auth-page">
+
+        <section class="auth-card">
+
+            <div class="auth-header">
+
+                <p class="auth-eyebrow">
+                    Welcome back
+                </p>
+
+                <h1>
+                    Log in to Mercato
+                </h1>
+
+                <p class="auth-subtitle">
+                    Access your account, cart,
+                    and marketplace tools.
+                </p>
+
+            </div>
+
+
+            <!-- LOGIN FORM -->
+
+            <form
+                class="auth-form"
+                action="/login"
+                method="POST"
+            >
+
+                <!-- EMAIL -->
+
+                <div class="form-control">
+
+                    <label for="email">
+                        Email
+                    </label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="you@example.com"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- PASSWORD -->
+
+                <div class="form-control">
+
+                    <label for="password">
+                        Password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="Your password"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- SUBMIT -->
+
+                <button
+                    class="auth-button"
+                    type="submit"
+                >
+                    Log In
+                </button>
+
+            </form>
+
+
+            <!-- SIGNUP LINK -->
+
+            <p class="auth-switch">
+
+                New to Mercato?
+
+                <a href="/signup">
+                    Create an account
+                </a>
+
+            </p>
+
+        </section>
+
+    </main>
+
+</body>
+
+</html>

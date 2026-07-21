@@ -1,8 +1,5 @@
 // controllers/adminController.js
 
-// Import the Sequelize Product model
-const Product = require('../models/products');
-
 
 // --------------------------------------------------
 // GET ADD PRODUCT PAGE
@@ -40,19 +37,25 @@ exports.postAddProduct = async (req, res, next) => {
 
 
         /*
+            req.user is the currently authenticated
+            Sequelize User instance.
+
             Because we defined:
 
                 User.hasMany(Product)
 
-            Sequelize gives a User instance:
+            Sequelize gives us:
 
-                user.createProduct()
+                req.user.createProduct()
 
-            req.user is currently our temporary
-            development user.
+            Creating through the authenticated user
+            automatically establishes ownership:
 
-            Sequelize automatically associates the
-            new product with that user using userId.
+                Logged-in User
+                        ↓
+                createProduct()
+                        ↓
+                products.userId = req.user.id
         */
 
         await req.user.createProduct({
@@ -71,7 +74,7 @@ exports.postAddProduct = async (req, res, next) => {
         res.redirect('/');
 
     } catch (err) {
-        console.log(err);
+
         next(err);
 
     }
@@ -87,18 +90,57 @@ exports.getEditProduct = async (req, res, next) => {
 
     try {
 
-        // Get ID from:
-        //
-        // /admin/edit-product/:productId
-
+        // Product ID requested by the client.
         const productId = req.params.productId;
 
 
-        // Find product using its primary key
-        const product = await Product.findByPk(productId);
+        /*
+            IMPORTANT AUTHORIZATION CHECK
+
+            We do NOT use:
+
+                Product.findByPk(productId)
+
+            because that would find ANY user's product.
+
+            Instead, we search only inside the currently
+            authenticated user's products.
+
+            Conceptually:
+
+                SELECT *
+                FROM products
+                WHERE id = productId
+                  AND userId = req.user.id
+        */
+
+        const products = await req.user.getProducts({
+
+            where: {
+
+                id: productId
+
+            }
+
+        });
 
 
-        // Product does not exist
+        // getProducts() returns an array.
+        const product = products[0];
+
+
+        /*
+            If no product was returned, either:
+
+            1. The product does not exist
+
+            OR
+
+            2. It exists but belongs to another user
+
+            In either case, this user must not edit it.
+        */
+
         if (!product) {
 
             return res.redirect('/');
@@ -133,15 +175,37 @@ exports.postEditProduct = async (req, res, next) => {
 
     try {
 
-        // Get submitted product ID
+        // Product ID submitted by the client.
+        //
+        // Never treat this ID itself as proof
+        // that the user owns the product.
+
         const productId = req.body.productId;
 
 
-        // Find the existing product in MySQL
-        const product = await Product.findByPk(productId);
+        /*
+            Find the product ONLY within the
+            authenticated user's products.
+
+            This performs the ownership authorization
+            before allowing any modification.
+        */
+
+        const products = await req.user.getProducts({
+
+            where: {
+
+                id: productId
+
+            }
+
+        });
 
 
-        // Product does not exist
+        const product = products[0];
+
+
+        // Product missing OR owned by another user.
         if (!product) {
 
             return res.redirect('/');
@@ -149,10 +213,9 @@ exports.postEditProduct = async (req, res, next) => {
         }
 
 
-        /*
-            Update the Sequelize model instance
-            in JavaScript memory.
-        */
+        // ------------------------------------------
+        // UPDATE AUTHORIZED PRODUCT
+        // ------------------------------------------
 
         product.title = req.body.title;
 
@@ -163,16 +226,7 @@ exports.postEditProduct = async (req, res, next) => {
         product.description = req.body.description;
 
 
-        /*
-            Persist the changed instance to MySQL.
-
-            Conceptually:
-
-                UPDATE products
-                SET ...
-                WHERE id = productId
-        */
-
+        // Persist changes to MySQL.
         await product.save();
 
 
@@ -195,17 +249,35 @@ exports.postDeleteProduct = async (req, res, next) => {
 
     try {
 
-        // Your current delete route supplies the ID
-        // through req.params.productId.
-
+        // Product ID supplied through the URL.
         const productId = req.params.productId;
 
 
-        // Find the product first
-        const product = await Product.findByPk(productId);
+        /*
+            Again, scope the database query through
+            the authenticated user.
+
+            Do NOT simply find any product by ID.
+
+            Only a product owned by req.user can
+            be returned here.
+        */
+
+        const products = await req.user.getProducts({
+
+            where: {
+
+                id: productId
+
+            }
+
+        });
 
 
-        // Product does not exist
+        const product = products[0];
+
+
+        // Product missing OR owned by another user.
         if (!product) {
 
             return res.redirect('/');
@@ -213,14 +285,8 @@ exports.postDeleteProduct = async (req, res, next) => {
         }
 
 
-        /*
-            Delete this specific Sequelize instance.
-
-            Conceptually:
-
-                DELETE FROM products
-                WHERE id = productId
-        */
+        // Authorization succeeded.
+        // This user owns the product.
 
         await product.destroy();
 

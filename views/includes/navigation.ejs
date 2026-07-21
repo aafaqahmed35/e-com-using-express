@@ -2,7 +2,10 @@
 
     <nav class="main-header__nav">
 
-        <!-- MERCATO LOGO -->
+        <!-- ==========================================
+             MERCATO LOGO
+             ========================================== -->
+
         <a href="/" class="brand">
 
             <img
@@ -14,10 +17,15 @@
         </a>
 
 
-        <!-- NAVIGATION LINKS -->
+        <!-- ==========================================
+             NAVIGATION
+             ========================================== -->
+
         <ul class="main-header__item-list">
 
+
             <!-- SHOP -->
+
             <li class="main-header__item">
 
                 <a
@@ -30,33 +38,213 @@
             </li>
 
 
-            <!-- ADD PRODUCT -->
-            <li class="main-header__item">
-
-                <a
-                    class="<%= path === '/admin/add-product' ? 'active' : '' %>"
-                    href="/admin/add-product"
-                >
-                    Add Product
-                </a>
-
-            </li>
+            <% if (isAuthenticated) { %>
 
 
-            <!-- CART -->
-            <li class="main-header__item">
+                <!-- ==================================
+                     LOGGED-IN NAVIGATION
+                     ================================== -->
 
-                <a
-                    class="<%= path === '/cart' ? 'active' : '' %>"
-                    href="/cart"
-                >
-                    Cart
-                </a>
 
-            </li>
+                <!-- ADD PRODUCT -->
+
+                <li class="main-header__item">
+
+                    <a
+                        class="<%= path === '/admin/add-product' ? 'active' : '' %>"
+                        href="/admin/add-product"
+                    >
+                        Add Product
+                    </a>
+
+                </li>
+
+
+                <!-- CART -->
+
+                <li class="main-header__item">
+
+                    <a
+                        class="<%= path === '/cart' ? 'active' : '' %>"
+                        href="/cart"
+                    >
+                        Cart
+                    </a>
+
+                </li>
+
+
+                <!-- LOGOUT -->
+
+                <li class="main-header__item">
+
+                    <form
+                        action="/logout"
+                        method="POST"
+                        class="auth-nav-form"
+                    >
+
+                        <button
+                            type="submit"
+                            class="auth-nav-button"
+                        >
+                            Logout
+                        </button>
+
+                    </form>
+
+                </li>
+
+
+            <% } else { %>
+
+
+                <!-- ==================================
+                     LOGGED-OUT NAVIGATION
+                     ================================== -->
+
+
+                <!-- LOGIN -->
+
+                <li class="main-header__item">
+
+                    <a
+                        href="/login"
+                        class="auth-nav-button"
+                    >
+                        Login
+                    </a>
+
+                </li>
+
+
+                <!-- SIGN UP -->
+
+                <li class="main-header__item">
+
+                    <a
+                        href="/signup"
+                        class="auth-nav-button"
+                    >
+                        Sign Up
+                    </a>
+
+                </li>
+
+
+            <% } %>
 
         </ul>
 
     </nav>
 
 </header>
+
+
+<style>
+
+    /* ==========================================
+       AUTH NAVIGATION
+       ========================================== */
+
+    .auth-nav-form {
+        margin: 0;
+        padding: 0;
+
+        display: flex;
+        align-items: center;
+    }
+
+
+    /*
+        Login / Sign Up / Logout
+
+        Compact version of the Details button so
+        it fits naturally inside the navbar.
+    */
+
+    .main-header__item .auth-nav-button {
+
+        display: inline-flex;
+
+        align-items: center;
+        justify-content: center;
+
+        box-sizing: border-box;
+
+        /* Smaller than product-card buttons */
+        min-height: 38px;
+
+        padding: 0 1.15rem;
+
+        border: none;
+        border-radius: 8px;
+
+        background: #c45a3c;
+
+        color: #ffffff;
+
+        font-family: inherit;
+        font-size: 0.9rem;
+        font-weight: 700;
+
+        line-height: 1;
+
+        text-decoration: none;
+
+        cursor: pointer;
+
+        transition:
+            transform 0.15s ease,
+            opacity 0.15s ease,
+            box-shadow 0.15s ease;
+    }
+
+
+    .main-header__item .auth-nav-button:hover {
+
+        color: #ffffff;
+
+        opacity: 0.92;
+
+        transform: translateY(-1px);
+
+        box-shadow:
+            0 3px 8px rgba(0, 0, 0, 0.08);
+    }
+
+
+    .main-header__item .auth-nav-button:active {
+
+        transform: translateY(0);
+
+        box-shadow: none;
+    }
+
+
+    /*
+        Vertically align every navbar item,
+        regardless of whether it contains
+        an <a>, <button>, or <form>.
+    */
+
+    .main-header__item {
+
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+    }
+
+
+    /*
+        Keep the entire right-side navigation
+        vertically centered as one unit.
+    */
+
+    .main-header__item-list {
+
+        align-items: center;
+    }
+
+</style>
